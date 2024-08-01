@@ -44,12 +44,12 @@ type cliCommand struct {
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
-		"help": cliCommand{
+		"help": {
 			name:     "help",
 			desc:     "Show available commands",
 			callback: commandHelp,
 		},
-		"exit": cliCommand{
+		"exit": {
 			name:     "exit",
 			desc:     "Exit pokedex",
 			callback: commandExit,
@@ -59,6 +59,5 @@ func getCommands() map[string]cliCommand {
 
 func cleanInput(text string) []string {
 	text = strings.ToLower(text)
-
-	return strings.Split(text, " ")
+	return strings.Fields(text)
 }
