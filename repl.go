@@ -5,9 +5,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/Hien-Trinh/pokedex/internal/pokeapi"
 )
 
-func repl() {
+type config struct {
+	pokeapiClient   pokeapi.Client
+	nextLocationURL string
+	prevLocationURL string
+}
+
+func repl(cfg *config) {
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
