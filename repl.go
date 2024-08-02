@@ -11,8 +11,8 @@ import (
 
 type config struct {
 	pokeapiClient   pokeapi.Client
-	nextLocationURL string
-	prevLocationURL string
+	nextLocationURL *string
+	prevLocationURL *string
 }
 
 func repl(cfg *config) {
@@ -35,7 +35,7 @@ func repl(cfg *config) {
 			continue
 		}
 
-		err := commands.callback()
+		err := commands.callback(cfg)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			continue
@@ -47,7 +47,7 @@ func repl(cfg *config) {
 type cliCommand struct {
 	name     string
 	desc     string
-	callback func() error
+	callback func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -56,6 +56,16 @@ func getCommands() map[string]cliCommand {
 			name:     "help",
 			desc:     "Show available commands",
 			callback: commandHelp,
+		},
+		"map": {
+			name:     "map",
+			desc:     "List next 50 locations",
+			callback: commandMap,
+		},
+		"mapb": {
+			name:     "mapb",
+			desc:     "List previous 50 locations",
+			callback: commandMapb,
 		},
 		"exit": {
 			name:     "exit",

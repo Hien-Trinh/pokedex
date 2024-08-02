@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"time"
 
 	"github.com/Hien-Trinh/pokedex/internal/pokeapi"
@@ -11,13 +9,8 @@ import (
 func main() {
 	pokeClient := pokeapi.NewClient(5 * time.Second)
 
-	resp, err := pokeClient.ListLocations()
-	if err != nil {
-		log.Fatal(err)
+	cfg := &config{
+		pokeapiClient: pokeClient,
 	}
-	fmt.Println(resp)
-	// cfg := &config{
-	// 	pokeapiClient: pokeClient,
-	// }
-	// repl(cfg)
+	repl(cfg)
 }
