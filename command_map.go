@@ -14,6 +14,9 @@ func commandMap(cfg *config) error {
 	for _, location := range resp.Results {
 		fmt.Printf("- %s\n", location.Name)
 	}
+
+	cfg.prevLocationURL = cfg.nextLocationURL
+	cfg.nextLocationURL = resp.Next
 	return nil
 }
 
@@ -27,5 +30,8 @@ func commandMapb(cfg *config) error {
 	for _, location := range resp.Results {
 		fmt.Printf("- %s\n", location.Name)
 	}
+
+	cfg.nextLocationURL = cfg.prevLocationURL
+	cfg.prevLocationURL = resp.Previous
 	return nil
 }
