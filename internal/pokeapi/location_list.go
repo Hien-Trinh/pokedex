@@ -8,9 +8,20 @@ import (
 )
 
 func (client *Client) ListLocations(pageURL *string) (LocationAreasResponse, error) {
-	fullURL := baseURL + "/location-area"
+	fullURL := baseURL + "/location-area?offset=0&limit=20"
 	if pageURL != nil {
 		fullURL = *pageURL
+	}
+
+	cached_data, ok := client.cache.Get(fullURL)
+	if ok {
+		response := LocationAreasResponse{}
+		err := json.Unmarshal(cached_data, &response)
+		if err != nil {
+			return LocationAreasResponse{}, err
+		}
+
+		return response, nil
 	}
 
 	req, err := http.NewRequest(http.MethodGet, fullURL, nil)
@@ -38,6 +49,8 @@ func (client *Client) ListLocations(pageURL *string) (LocationAreasResponse, err
 	if err != nil {
 		return LocationAreasResponse{}, err
 	}
+
+	client.cache.Add(fullURL, data)
 
 	return response, nil
 }
