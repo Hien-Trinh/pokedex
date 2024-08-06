@@ -23,10 +23,10 @@ func commandMap(cfg *config) error {
 
 func commandMapb(cfg *config) error {
 	if cfg.prevLocationURL == nil {
-		return errors.New("You are already at the beginning of the list")
+		return errors.New("you are already at the beginning of the list")
 	}
 
-	resp, err := cfg.pokeapiClient.ListLocations(nil)
+	resp, err := cfg.pokeapiClient.ListLocations(cfg.prevLocationURL)
 	if err != nil {
 		return err
 	}
