@@ -1,8 +1,9 @@
 package main
 
 import (
+	"crypto/rand"
 	"fmt"
-	"math/rand"
+	"math/big"
 )
 
 func commandCatch(cfg *config, args ...string) error {
@@ -16,12 +17,16 @@ func commandCatch(cfg *config, args ...string) error {
 		return err
 	}
 
-	res := rand.Intn(resp.BaseExperience)
-	threshold := 50
+	res, err := rand.Int(rand.Reader, big.NewInt(int64(resp.BaseExperience)))
+	if err != nil {
+		return err
+	}
+	resInt := res.Int64()
+	threshold := int64(50)
 
 	fmt.Printf("Throwing a Pokeball at %s...\n", name)
 
-	if res > threshold {
+	if resInt > threshold {
 		fmt.Printf("%s escaped\n", name)
 		return nil
 	}
