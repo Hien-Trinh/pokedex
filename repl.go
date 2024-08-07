@@ -35,7 +35,12 @@ func repl(cfg *config) {
 			continue
 		}
 
-		err := commands.callback(cfg)
+		args := []string{}
+		if len(text) > 1 {
+			args = text[1:]
+		}
+
+		err := commands.callback(cfg, args...)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			continue
@@ -47,7 +52,7 @@ func repl(cfg *config) {
 type cliCommand struct {
 	name     string
 	desc     string
-	callback func(*config) error
+	callback func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -66,6 +71,11 @@ func getCommands() map[string]cliCommand {
 			name:     "mapb",
 			desc:     "List previous 20 locations",
 			callback: commandMapb,
+		},
+		"explore": {
+			name:     "explore <location>",
+			desc:     "Explore locations",
+			callback: commandExplore,
 		},
 		"exit": {
 			name:     "exit",
